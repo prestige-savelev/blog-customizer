@@ -4,11 +4,22 @@ import { Button } from 'src/ui/button';
 import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
 
-export const ArticleParamsForm = () => {
+type ArticleParamsFormType = {
+	isOpen: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const ArticleParamsForm = (props: ArticleParamsFormType) => {
+	// Фунуция изменения состояния открытия формы
+	const toggleOpen = () => props.setOpen(!props.isOpen);
+
 	return (
 		<>
-			<ArrowButton isOpen={true} onClick={() => {}} />
-			<aside className={clsx(styles.container, styles.container_open)}>
+			<ArrowButton isOpen={props.isOpen} onClick={toggleOpen} />
+			<aside
+				className={clsx(styles.container, {
+					[styles.container_open]: props.isOpen,
+				})}>
 				<form className={styles.form}>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' htmlType='reset' type='clear' />
