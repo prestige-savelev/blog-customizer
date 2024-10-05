@@ -16,19 +16,27 @@ const App = () => {
 	// Состояние открытия формы
 	const [open, setOpen] = useState(false);
 
+	// Состояние страницы стилей
+	const [styleData, setStyleData] = useState(defaultArticleState);
+
+	// Возврат разметки страницы
 	return (
 		<main
 			className={clsx(styles.main)}
 			style={
 				{
-					'--font-family': defaultArticleState.fontFamilyOption.value,
-					'--font-size': defaultArticleState.fontSizeOption.value,
-					'--font-color': defaultArticleState.fontColor.value,
-					'--container-width': defaultArticleState.contentWidth.value,
-					'--bg-color': defaultArticleState.backgroundColor.value,
+					'--font-family': styleData.fontFamilyOption.value,
+					'--font-size': styleData.fontSizeOption.value,
+					'--font-color': styleData.fontColor.value,
+					'--container-width': styleData.contentWidth.value,
+					'--bg-color': styleData.backgroundColor.value,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm isOpen={open} setOpen={setOpen} />
+			<ArticleParamsForm
+				isOpen={open}
+				setOpen={setOpen}
+				setStyleData={setStyleData}
+			/>
 			<Article />
 		</main>
 	);
