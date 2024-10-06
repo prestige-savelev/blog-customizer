@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client';
 import { StrictMode, CSSProperties, useState } from 'react';
-import clsx from 'clsx';
 
 import { Article } from './components/article/Article';
 import { ArticleParamsForm } from './components/article-params-form/ArticleParamsForm';
@@ -13,16 +12,13 @@ const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 const App = () => {
-	// Состояние открытия формы
-	const [open, setOpen] = useState(false);
-
 	// Состояние страницы стилей
 	const [styleData, setStyleData] = useState(defaultArticleState);
 
 	// Возврат разметки страницы
 	return (
 		<main
-			className={clsx(styles.main)}
+			className={styles.main}
 			style={
 				{
 					'--font-family': styleData.fontFamilyOption.value,
@@ -32,11 +28,7 @@ const App = () => {
 					'--bg-color': styleData.backgroundColor.value,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm
-				isOpen={open}
-				setOpen={setOpen}
-				setStyleData={setStyleData}
-			/>
+			<ArticleParamsForm setStyleData={setStyleData} />
 			<Article />
 		</main>
 	);

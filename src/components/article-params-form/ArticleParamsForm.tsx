@@ -4,7 +4,6 @@ import { Button } from 'src/ui/button';
 import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
 import { useRef, useState } from 'react';
-import { useOutsideClickClose } from 'src/ui/select/hooks/useOutsideClickClose';
 import {
 	backgroundColors,
 	contentWidthArr,
@@ -19,35 +18,30 @@ import { Text } from 'src/ui/text';
 import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
 import { Separator } from 'src/ui/separator';
+import { useClose } from './hooks/useClose';
 
 type ArticleParamsFormType = {
-	isOpen: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	setStyleData: (styleData: ArticleStateType) => void;
 };
 
 export const ArticleParamsForm = (props: ArticleParamsFormType) => {
 	// Состояние формы
-	const [data, setData] = useState({
-		fontFamilyOption: fontFamilyOptions[0],
-		fontColor: fontColors[0],
-		backgroundColor: backgroundColors[0],
-		contentWidth: contentWidthArr[0],
-		fontSizeOption: fontSizeOptions[0],
-	});
+	const [data, setData] = useState(defaultArticleState);
+
+	// Состояние открытия формы
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	// Фунуция изменения состояния открытия формы
-	const toggleOpen = () => props.setOpen(!props.isOpen);
+	const toggleOpen = () => setIsMenuOpen(!isMenuOpen);
 
 	// Хук для хранения разметки aside формы
 	const ref = useRef<HTMLDivElement | null>(null);
 
 	// Кастомный хук для закрытия при клике вне экрана
-	useOutsideClickClose({
-		isOpen: props.isOpen,
+	useClose({
+		isOpen: isMenuOpen,
+		onClose: toggleOpen,
 		rootRef: ref,
-		onClose: () => toggleOpen,
-		onChange: props.setOpen,
 	});
 
 	// Изменения состояния формы
@@ -107,11 +101,11 @@ export const ArticleParamsForm = (props: ArticleParamsFormType) => {
 	// Возврат разметки формы
 	return (
 		<>
-			<ArrowButton isOpen={props.isOpen} onClick={toggleOpen} />
+			<ArrowButton isOpen={isMenuOpen} onClick={toggleOpen} />
 			<aside
 				ref={ref}
 				className={clsx(styles.container, {
-					[styles.container_open]: props.isOpen,
+					[styles.container_open]: isMenuOpen,
 				})}>
 				<form className={styles.form} onSubmit={changeStyle}>
 					<Text as='h2' size={31} weight={800}>
